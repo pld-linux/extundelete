@@ -1,12 +1,14 @@
 Summary:	Recover deleted files from an ext3 or ext4 partition
 Name:		extundelete
 Version:	0.2.0
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		Applications/System
 Source0:	http://dl.sourceforge.net/extundelete/%{name}-%{version}.tar.bz2
 # Source0-md5:	6dac74b12a747f133326ff7b81fceedd
 URL:		http://extundelete.sourceforge.net/
+Patch0:		%{name}-attrs.patch
+Patch1:		%{name}-dirs.patch
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	libstdc++-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -23,6 +25,8 @@ after recovering your files!
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
 %configure
