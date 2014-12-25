@@ -1,5 +1,5 @@
---- a/src/extundelete.cc	2010-05-16 03:51:15.000000000 +0200
-+++ b/src/extundelete.cc	2012-01-01 15:54:07.000000000 +0100
+--- extundelete-0.2.4/src/extundelete.cc.orig	2014-12-24 14:00:40.401233636 +0100
++++ extundelete-0.2.4/src/extundelete.cc	2014-12-24 14:41:00.240755859 +0100
 @@ -89,6 +89,7 @@ Important future enhancements:
  #include <fcntl.h>
  #include <unistd.h>
@@ -8,19 +8,19 @@
  
  /* GNU headers */
  #ifndef HAVE_GETOPT_H
-@@ -2532,8 +2533,14 @@ int restore_inode(ext2_filsys fs, ext2_f
- 
- 			if(!flag) {
- 				if (truncate( (outputdir + fname2).c_str(), EXT2_I_SIZE(inode)) == 0) {
+@@ -1746,8 +1746,14 @@ errcode_t restore_inode(ext2_filsys fs,
+ 				}
+ 				tsize = fsize - rsize;
+ 				if ((retval = truncate( (outputdir + fname2).c_str(), tsize)) == 0) {
 +					struct timeval times[2];
 +					chmod((outputdir + fname2).c_str(),inode->i_mode);
 +					lchown((outputdir + fname2).c_str(),inode->i_uid,inode->i_gid);
 +					times[0].tv_sec=inode->i_atime; times[0].tv_usec=0;
 +					times[1].tv_sec=inode->i_mtime; times[1].tv_usec=0;
 +					utimes((outputdir + fname2).c_str(),times);
- 					std::cout << "Restored inode " << ino << " to file ";
--					std::cout << (outputdir + fname2) << std::endl;
-+					std::cout << (outputdir + fname2) << " deleted " << asctime(localtime((time_t*)&inode->i_dtime));
+ 					Log::info << "Restored inode " << ino << " to file "
+-					<< (outputdir + fname2) << std::endl;
++					<< (outputdir + fname2) << " deleted " << asctime(localtime((time_t*)&inode->i_dtime)) << std::endl;
  					retval = 0;
  				} else {
- 					std::cout << "Failed to restore inode " << ino << " to file ";
+ 					Log::warn << "Failed to restore inode " << ino << " to file "
