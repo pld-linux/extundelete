@@ -9,6 +9,7 @@ Source0:	http://download.sourceforge.net/extundelete/%{name}-%{version}.tar.bz2
 # Source0-md5:	77e626ad31433680c0a222069295d2ca
 Patch0:		%{name}-attrs.patch
 Patch1:		%{name}-dirs.patch
+Patch2:		e2fsprogs.patch
 URL:		http://extundelete.sourceforge.net/
 BuildRequires:	e2fsprogs-devel
 BuildRequires:	libcom_err-devel
@@ -38,6 +39,7 @@ zapominać o kopiach zapasowych!
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %configure
